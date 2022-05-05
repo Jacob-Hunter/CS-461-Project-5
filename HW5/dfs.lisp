@@ -72,9 +72,9 @@
             ((eq target (car (car M))) 
             (setq path (append (list(car (car M))) path))
             (cond
-                ((eq optimalPath nil) (setq optimalPath path))
-
-                ; Used to find the absoulte optimal path using dfs
+                ((eq optimalPath nil) (setq optimalPath (reverseL path)))
+                
+                ; Finds the absoulute optimal path
                 ; ((> (length optimalPath) (length path)) (setq optimalPath path))
             )
             (reverseL optimalPath))

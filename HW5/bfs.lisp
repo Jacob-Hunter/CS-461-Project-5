@@ -44,7 +44,7 @@
 
 
 ; Conduct breadth first search of the graph 
-(defun bfs (start goal graph)
+(defun bfs (start target graph)
         (setq visited '(start))
     (cond
             ((eq target (car (car M))) 
