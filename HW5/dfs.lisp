@@ -1,3 +1,7 @@
+;;Depth First Search Algorithm
+;;dfs performs a depth-first search on one pass though the graph and
+;;dfsOP finds the optimal path by checking every option
+
 (setq graph '( 
                (a (b 3) (c 1)) 
                (b (a 3) (d 1)) 
@@ -8,12 +12,14 @@
                (g (d 2) (f 1))) 
 )
 
+; checks if atom A is a member of list L
 (defun memberb (A L)
     (cond
         ((NULL L) '())
         ((EQ (car L) A) T)
         (T (memberb A (cdr L)))))
 
+; returns the items in the list in reverse order
 (defun reverseL (L)
     (cond
         ((null L) `())
@@ -21,13 +27,15 @@
         (T (append (reverseL(cdr L)) (list (car L))))
     )
 )
-        
+
+; iteratively finds length of the list
 (defun lengthb (L)
     (do ((M L)(sum 0))
         ((NULL M) sum)
         (setq M (cdr M))
         (setq sum(+ sum 1))))
 
+; grabs the cdr of a list starting at element start
 (defun cdrList (start graph)
     (cond
         ((> (lengthb graph) 2)
@@ -36,6 +44,7 @@
             ((cdrList start (cdr graph))))
         (cdr graph))))
 
+; Conducts a depth first search on the graph
 (defun dfs (start target graph &optional path)
     ; Sets each node that was visited in the graph
     (setq visited '())
@@ -47,8 +56,8 @@
         (setq path '())
         (push start path)
         (push start visited)
-        ;(print (cdr (car M)))
         
+        ; Recursively runs dfs until a solution is found
         (dfsR start target (findPath start graph) graph visited path `())
         
 
@@ -64,51 +73,24 @@
             (setq path (append (list(car (car M))) path))
             (cond
                 ((eq optimalPath nil) (setq optimalPath path))
-                ((> (length optimalPath) (length path)) (setq optimalPath path))
+
+                ; Used to find the absoulte optimal path using dfs
+                ; ((> (length optimalPath) (length path)) (setq optimalPath path))
             )
             (reverseL optimalPath))
             ((not (memberb (car (car M)) visited))
             (setq visited (append (list(car (car M))) visited))
             (setq path (append (list(car (car M))) path))
-            ;(print (car M))
-            ;(print visited)
-            ;(print (reverseL path))
             (setq optimalPath (dfsR start target (findPath (car (car M)) graph) graph visited path optimalPath))
             )
         )
     )
 )
 
+; Finds the specific adjacency list row for each element in graph
 (defun findPath (A graph)
     (cond
         ((eq A (car (car graph))) (cdr (car graph)))
         (T (findPath A (cdr graph)))
     )
 )
-
-(defun hillClimb (start target graph &optional path)
-    (cond
-        ((eq start target) (push start path) (write (nreverse path)))
-
-        ((eq (car(car graph)) start)
-        (push start path)
-        (setq start (expandNode start target (cdr(car graph)) path))
-        (hillClimb start target (cdrList start graph) path))
-        
-        ((hillClimb start target (cdrList start graph) path))))
-
-(defun expandNode (node target connections path)
-    (setq shortest 9999)
-    (do ((M connections))
-        ((NULL M) nextNode)
-        (cond
-            ((memberb target (car M))
-            (setq nextNode target)
-            (setq M (cdr M)))
-            ((memberb (car(car M)) path) (setq M (cdr M)))
-            ((cond
-                ((< (car(cdr(car M))) shortest)
-                (setq shortest (car(cdr(car M))))
-                (setq nextNode (car(car M)))
-                (setq M (cdr M)))
-                ((setq M (cdr M))))))))

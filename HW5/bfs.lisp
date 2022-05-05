@@ -10,12 +10,14 @@
                (g (d 2) (f 1))) 
 )
 
+; checks if atom A is a member of list L
 (defun memberb (A L)
     (cond
         ((NULL L) '())
         ((EQ (car L) A) T)
         (T (memberb A (cdr L)))))
 
+; returns the items in the list in reverse order
 (defun reverseL (L)
     (cond
         ((null L) `())
@@ -23,13 +25,15 @@
         (T (append (reverseL(cdr L)) (list (car L))))
     )
 )
-        
+
+; iteratively finds length of the list
 (defun lengthb (L)
     (do ((M L)(sum 0))
         ((NULL M) sum)
         (setq M (cdr M))
         (setq sum(+ sum 1))))
 
+; grabs the cdr of a list starting at element start
 (defun cdrList (start graph)
     (cond
         ((> (lengthb graph) 2)
@@ -39,7 +43,7 @@
         (cdr graph))))
 
 
-    
+; Conduct breadth first search of the graph 
 (defun bfs (start goal graph)
         (setq visited '(start))
     (cond
@@ -52,9 +56,6 @@
             (lambda (not (memberb (car (car M)) visited))
             (setq visited (append (list(car (car M))) visited))
             (setq path (append (list(car (car M))) path))
-            ;(print (car M))
-            ;(print visited)
-            ;(print (reverseL path))
             (setq optimalPath (bfs start target (findPath (car (car M)) graph) graph visited path optimalPath))
             )
         )
@@ -66,6 +67,7 @@
                  (if (null M)
                      nil))))
 
+; Finds the specific adjacency list row for each element in graph
 (defun findPath (A graph)
     (cond
         ((eq A (car (car graph))) (cdr (car graph)))

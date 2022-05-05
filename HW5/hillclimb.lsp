@@ -8,18 +8,21 @@
                (g (d 2) (f 1))) 
 )
 
+; checks if atom A is a member of list L
 (defun member (A L)
     (cond
         ((NULL L) '())
         ((EQ (car L) A) T)
         (T (member A (cdr L)))))
-        
+
+; iteratively finds length of the list    
 (defun length (L)
     (do ((M L)(sum 0))
         ((NULL M) sum)
         (setq M (cdr M))
         (setq sum(+ sum 1))))
 
+; grabs the cdr of a list starting at element start
 (defun cdrList (start graph)
     (cond
         ((> (length graph) 2)
@@ -28,6 +31,7 @@
             ((cdrList start (cdr graph))))
         (cdr graph))))
 
+; Preforms the hill climbing algorithm on a graph
 (defun hillClimb (start target graph &optional path)
     (cond
         ((eq start target)
